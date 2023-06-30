@@ -1,0 +1,64 @@
+- name: setting firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - 22
+    - 80
+    - 443
+
+- name: enable ufw
+  ufw:
+    state: enabled
+
+- name: upgrade system
+  apt: upgrade=dist update_cache=yes
+
+- name: install nginx
+  apt: name=nginx state=latest
+
+- name: install letsencrypt
+  apt: name=letsencrypt state=latest
+
+- name: create letsencrypt directory
+  file: name=/var/www/letsencrypt state=directory
+
+- name: install system nginx config
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+
+- name: install apps nginx config
+  template:
+    src: app.conf.j2
+    dest: /etc/nginx/sites-enabled/{{ item.name }}
+  loop: "{{ domains }}"
+
+- name: reload nginx
+  service: name=nginx state=restarted
+
+- name: install certbot
+  apt: name=certbot state=latest
+
+- name: install certbot nginx plugin
+  apt: name=python3-certbot-nginx state=latest
+
+- name: generate ssl certificates for nginx reinstall
+  shell: certbot --nginx --non-interactive --agree-tos -m {{ letsencrypt_email }} {{ item }}
+  loop: "{{ domain_params }}"
+
+- name: generate dhparams
+  shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
+  args:
+    creates: /etc/nginx/dhparams.pem
+
+- name: reload nginx
+  service: name=nginx state=restarted
+
+- name: add cronjob for certbot renewal
+  cron:
+    name: letsencrypt_renewal
+    special_time: weekly
+    job: certbot --renew --nginx --non-interactive --agree-tos -m {{ letsencrypt_email }} {{ item }} && service nginx reload
+  loop: "{{ domain_params }}"

@@ -1,5 +1,19 @@
 ---
 # tasks file for web
+- name: setting firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - 22
+    - 80
+    - 443
+
+- name: enable ufw
+  ufw:
+    state: enabled
+
 - name: check if nginx exists
   stat:
     path: /etc/nginx
@@ -11,39 +25,20 @@
     state: present
   when: nginx_exists.stat.exists == False
 
-- name: copy conf to nginx sites
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-  with_items:
-    - {
-        src: "boardbyte-api.conf",
-        dest: "/etc/nginx/sites-available/boardbyte-api.conf",
-      }
-    - {
-        src: "furniskuy-admin.conf",
-        dest: "/etc/nginx/sites-available/furniskuy-admin.conf",
-      }
-    - { src: "restskuy.conf", dest: "/etc/nginx/sites-available/restskuy.conf" }
+- name: copy conf to nginx sites with
+  vars:
+    hosts: "{{ groups['digitalocean'] }}"
+  template:
+    src: "{{ item.name }}.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ item.name }}.conf"
+  loop: "{{ domains }}"
 
 - name: create symbolic links
   file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "/etc/nginx/sites-available/{{ item.name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}.conf"
     state: link
-  with_items:
-    - {
-        src: "/etc/nginx/sites-available/boardbyte-api.conf",
-        dest: "/etc/nginx/sites-enabled/boardbyte-api.conf",
-      }
-    - {
-        src: "/etc/nginx/sites-available/furniskuy-admin.conf",
-        dest: "/etc/nginx/sites-enabled/furniskuy-admin.conf",
-      }
-    - {
-        src: "/etc/nginx/sites-available/restskuy.conf",
-        dest: "/etc/nginx/sites-enabled/restskuy.conf",
-      }
+  loop: "{{ domains }}"
 
 - name: copy restskuy service file
   copy:
@@ -59,3 +54,19 @@
     state: started
     name: restskuy
     enabled: yes
+
+- name: install nvm
+  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+  args:
+    creates: "/root/.nvm/nvm.sh"
+
+- name: install Node Versions
+  shell: . /root/.bashrc && nvm install --lts && nvm use --lts
+
+- name: install yarn and pm2
+  shell: . /root/.bashrc && npm install -g yarn pm2
+
+- name: install php 8.1
+  shell: add-apt-repository --yes ppa:ondrej/php && apt update && apt install -y php8.1 php8.1-fpm php8.1-pgsql php8.1-mbstring php8.1-xml php8.1-curl php8.1-zip php8.1-gd php8.1-bcmath php8.1-redis php8.1-imagick
+  args:
+    creates: "/usr/bin/php8.1"

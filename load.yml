@@ -1,0 +1,26 @@
+- name: bootstrap app load balancer and ssl
+  hosts: load
+  become: yes
+  vars:
+    letsencrypt_email: "fadilmuh2002@gmail.com"
+    web_hosts: "{{ groups['web'] }}"
+    domains:
+      - {
+          name: restskuy,
+          domain: "restskuy.rascent.tech www.restskuy.rascent.tech",
+        }
+      - {
+          name: "furniskuy-admin",
+          domain: "furniskuy.rascent.tech www.furniskuy.rascent.tech",
+        }
+      - {
+          name: "boardbyte-api",
+          domain: "boardbyte.rascent.tech www.boardbyte.rascent.tech",
+        }
+    domain_params:
+      - -d restskuy.rascent.tech -d www.restskuy.rascent.tech
+      - -d furniskuy.rascent.tech -d www.furniskuy.rascent.tech
+      - -d boardbyte.rascent.tech -d www.boardbyte.rascent.tech
+
+  roles:
+    - ssl

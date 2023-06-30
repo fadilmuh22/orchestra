@@ -1,5 +1,5 @@
 server  {
-    server_name boardbyte.rascent.tech www.boardbyte.rascent.tech;
+    server_name {{ item.domain }};
 
     location / {
             proxy_pass http://127.0.0.1:3010;

@@ -1,5 +1,5 @@
 server {
-    server_name restskuy.rascent.tech www.restskuy.rascent.tech;
+    server_name {{ item.domain }};
 
     location / {
         try_files               $uri $uri/ @go;

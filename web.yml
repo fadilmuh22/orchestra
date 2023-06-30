@@ -1,0 +1,19 @@
+- name: bootstrap app server
+  hosts: web
+  become: yes
+  vars:
+    domains:
+      - {
+          name: restskuy,
+          domain: "restskuy.rascent.tech www.restskuy.rascent.tech",
+        }
+      - {
+          name: "furniskuy-admin",
+          domain: "furniskuy.rascent.tech www.furniskuy.rascent.tech",
+        }
+      - {
+          name: "boardbyte-api",
+          domain: "boardbyte.rascent.tech www.boardbyte.rascent.tech",
+        }
+  roles:
+    - web
