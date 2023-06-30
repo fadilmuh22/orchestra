@@ -1,0 +1,11 @@
+[Unit]
+Description=Restskuy service
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/restskuy/current
+ExecStart=/var/www/restskuy/current/restskuy
+Environment=PORT=443
+
+[Install]
+WantedBy=multi-user.target

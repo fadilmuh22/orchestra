@@ -1,0 +1,61 @@
+---
+# tasks file for web
+- name: check if nginx exists
+  stat:
+    path: /etc/nginx
+  register: nginx_exists
+
+- name: install nginx
+  apt:
+    name: nginx
+    state: present
+  when: nginx_exists.stat.exists == False
+
+- name: copy conf to nginx sites
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - {
+        src: "boardbyte-api.conf",
+        dest: "/etc/nginx/sites-available/boardbyte-api.conf",
+      }
+    - {
+        src: "furniskuy-admin.conf",
+        dest: "/etc/nginx/sites-available/furniskuy-admin.conf",
+      }
+    - { src: "restskuy.conf", dest: "/etc/nginx/sites-available/restskuy.conf" }
+
+- name: create symbolic links
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - {
+        src: "/etc/nginx/sites-available/boardbyte-api.conf",
+        dest: "/etc/nginx/sites-enabled/boardbyte-api.conf",
+      }
+    - {
+        src: "/etc/nginx/sites-available/furniskuy-admin.conf",
+        dest: "/etc/nginx/sites-enabled/furniskuy-admin.conf",
+      }
+    - {
+        src: "/etc/nginx/sites-available/restskuy.conf",
+        dest: "/etc/nginx/sites-enabled/restskuy.conf",
+      }
+
+- name: copy restskuy service file
+  copy:
+    src: restskuy.service
+    dest: /etc/systemd/system/restskuy.service
+
+- name: systemd reload
+  systemd:
+    daemon_reload: yes
+
+- name: start restskuy service
+  systemd:
+    state: started
+    name: restskuy
+    enabled: yes

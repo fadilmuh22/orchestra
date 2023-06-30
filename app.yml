@@ -1,0 +1,5 @@
+- name: bootstrap app server
+  hosts: digitalocean
+  become: yes
+  roles:
+    - web
