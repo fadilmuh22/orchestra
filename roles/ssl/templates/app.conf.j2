@@ -4,8 +4,8 @@ upstream backend-{{ item.name }} {
   server {{ web_hosts[1] }};
 }
 
-limit_req_zone $binary_remote_addr zone={{ item.name }}-rate-limiter:100m rate=25r/s; # 1m = 16000 IP
-proxy_cache_path /var/cache/nginx/{{ item.name }} levels=1:2 keys_zone={{ item.name }}-cache:5m inactive=10m;
+# limit_req_zone $binary_remote_addr zone={{ item.name }}-rate-limiter:100m rate=25r/s; # 1m = 16000 IP
+# proxy_cache_path /var/cache/nginx/{{ item.name }} levels=1:2 keys_zone={{ item.name }}-cache:5m inactive=10m;
 log_format {{ item.name }}-upstreamlog 'remote_addr: $remote_addr | '
   'remote_user: $remote_user | '
   'time_local: $time_local | '      
@@ -27,13 +27,13 @@ server {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
 
-    proxy_read_timeout 10;
-    proxy_connect_timeout 10;
+    # proxy_read_timeout 10;
+    # proxy_connect_timeout 10;
     proxy_pass http://backend-{{ item.name }};
     proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
 
-    limit_req_status 429;
-    limit_req zone={{item.name}}-rate-limiter;
+    # limit_req_status 429;
+    # limit_req zone={{item.name}}-rate-limiter;
   }
 }
 
