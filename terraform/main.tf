@@ -15,7 +15,7 @@ terraform {
 provider "digitalocean" {}
 
 resource "digitalocean_droplet" "orchestra-drop" {
-  count     = 3
+  count     = 1
   image     = "ubuntu-22-04-x64"
   name      = "orchestra-drop-${count.index}"
   region    = "sgp1"
