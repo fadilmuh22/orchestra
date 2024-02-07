@@ -3,18 +3,18 @@
   become: yes
   vars:
     domains:
-      - {
-          name: restskuy,
-          domain: "restskuy.rascent.tech www.restskuy.rascent.tech",
-        }
-      - {
-          name: "furniskuy-admin",
-          domain: "furniskuy.rascent.tech www.furniskuy.rascent.tech",
-        }
-      - {
-          name: "boardbyte-api",
-          domain: "boardbyte.rascent.tech www.boardbyte.rascent.tech",
-        }
+      # - {
+      #     name: restskuy,
+      #     domain: "restskuy.rascent.tech www.restskuy.rascent.tech",
+      #   }
+      # - {
+      #     name: "furniskuy-admin",
+      #     domain: "furniskuy.rascent.tech www.furniskuy.rascent.tech",
+      #   }
+      # - {
+      #     name: "boardbyte-api",
+      #     domain: "boardbyte.rascent.tech www.boardbyte.rascent.tech",
+      #   }
       - {
           name: "ecoviary-api",
           domain: "ecoviary.rascent.tech www.ecoviary.rascent.tech",

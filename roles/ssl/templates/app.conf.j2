@@ -1,7 +1,6 @@
 upstream backend-{{ item.name }} {
   ip_hash;
   server {{ web_hosts[0] }};
-  server {{ web_hosts[1] }};
 }
 
 # limit_req_zone $binary_remote_addr zone={{ item.name }}-rate-limiter:100m rate=25r/s; # 1m = 16000 IP

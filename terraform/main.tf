@@ -12,29 +12,34 @@ terraform {
   }
 }
 
-provider "digitalocean" {}
+variable "do_token" {}
+variable "pvt_key" {}
 
-resource "digitalocean_droplet" "orchestra-drop" {
-  count     = 1
+provider "digitalocean" {
+  token = var.do_token
+}
+
+resource "digitalocean_droplet" "ecoviary-drop" {
+  count     = 2
   image     = "ubuntu-22-04-x64"
-  name      = "orchestra-drop-${count.index}"
+  name      = "ecoviary-drop-${count.index}"
   region    = "sgp1"
   size      = "s-1vcpu-1gb"
   ssh_keys  = [data.digitalocean_ssh_key.keys.id]
 }
 
 resource "digitalocean_project_resources" "project" {
-  project = data.digitalocean_project.orchestra.id
+  project = data.digitalocean_project.ecoviary.id
   resources = flatten([
-    digitalocean_droplet.orchestra-drop[*].urn
+    digitalocean_droplet.ecoviary-drop[*].urn
   ])
 }
 
 
 data "digitalocean_ssh_key" "keys" {
-  name = "fadillads-ubuntu"
+  name = "fadil-wsl-ubuntu"
 }
 
-data "digitalocean_project" "orchestra" {
-  name = "orchestra"
+data "digitalocean_project" "ecoviary" {
+  name = "ecoviary"
 }
