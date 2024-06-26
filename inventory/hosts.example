@@ -1,9 +1,9 @@
-[digitalocean]
+[web]
 127.0.0.1
 
 [load]
 127.0.0.1
 
 [all:vars]
-ansible_user=
-ansible_ssh_private_key_file=
+ansible_user=root
+ansible_ssh_private_key_file=~/.ssh/id_rsa.pub

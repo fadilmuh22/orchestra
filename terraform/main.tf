@@ -19,27 +19,27 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-resource "digitalocean_droplet" "ecoviary-drop" {
+resource "digitalocean_droplet" "orchestra-drop" {
   count     = 2
   image     = "ubuntu-22-04-x64"
-  name      = "ecoviary-drop-${count.index}"
+  name      = "orchestra-drop-${count.index}"
   region    = "sgp1"
   size      = "s-1vcpu-1gb"
   ssh_keys  = [data.digitalocean_ssh_key.keys.id]
 }
 
 resource "digitalocean_project_resources" "project" {
-  project = data.digitalocean_project.ecoviary.id
+  project = data.digitalocean_project.orchestra.id
   resources = flatten([
-    digitalocean_droplet.ecoviary-drop[*].urn
+    digitalocean_droplet.orchestra-drop[*].urn
   ])
 }
 
 
 data "digitalocean_ssh_key" "keys" {
-  name = "fadil-wsl-ubuntu"
+  name = "fadillads-ubuntu"
 }
 
-data "digitalocean_project" "ecoviary" {
-  name = "ecoviary"
+data "digitalocean_project" "orchestra" {
+  name = "orchestra"
 }

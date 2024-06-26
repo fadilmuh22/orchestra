@@ -7,25 +7,25 @@
     domains:
       # - {
       #     name: restskuy,
-      #     domain: "restskuy.rascent.tech www.restskuy.rascent.tech",
-      #   }
-      # - {
-      #     name: "furniskuy-admin",
-      #     domain: "furniskuy.rascent.tech www.furniskuy.rascent.tech",
-      #   }
-      # - {
-      #     name: "boardbyte-api",
-      #     domain: "boardbyte.rascent.tech www.boardbyte.rascent.tech",
+      #     domain: "restskuy.rascent.me www.restskuy.rascent.me",
       #   }
       - {
-          name: "ecoviary-api",
-          domain: "ecoviary.rascent.tech www.ecoviary.rascent.tech",
+          name: "furniskuy-admin",
+          domain: "furniskuy.rascent.me www.furniskuy.rascent.me",
         }
+      # - {
+      #     name: "boardbyte-api",
+      #     domain: "boardbyte.rascent.me www.boardbyte.rascent.me",
+      #   }
+      # - {
+      #     name: "ecoviary-api",
+      #     domain: "ecoviary.rascent.me www.ecoviary.rascent.me",
+      #   }
     domain_params:
-      # - -d restskuy.rascent.tech -d www.restskuy.rascent.tech
-      # - -d furniskuy.rascent.tech -d www.furniskuy.rascent.tech
-      # - -d boardbyte.rascent.tech -d www.boardbyte.rascent.tech
-      - -d ecoviary.rascent.tech -d www.ecoviary.rascent.tech
+      # - -d restskuy.rascent.me -d www.restskuy.rascent.me
+      - -d furniskuy.rascent.me -d www.furniskuy.rascent.me
+      # - -d boardbyte.rascent.me -d www.boardbyte.rascent.me
+      # - -d ecoviary.rascent.me -d www.ecoviary.rascent.me
 
   roles:
     - ssl

@@ -12,9 +12,6 @@
   ufw:
     state: enabled
 
-- name: upgrade system
-  apt: upgrade=dist update_cache=yes
-
 - name: install nginx
   apt: name=nginx state=latest
 
