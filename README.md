@@ -12,7 +12,8 @@ Before getting started, make sure you have the following:
 
 ## Digital Ocean Setup
 
-Add your private key on digital ocean
+- Create project in digital ocean
+- Add your private key on digital ocean
 
 ## Getting Started
 
@@ -29,7 +30,7 @@ To create the server and configure it with Ansible, follow these steps:
     -var "do_token=${DO_PAT}" \
     -var "pvt_key=${PVT_KEY}"
 ` to create the server in Digital Ocean.
-6. Once the server is created, run `ansible-playbook -i inventory/hosts playbook.yml` to configure it with Ansible.
+6. Once the server is created, run `ansible-playbook -i inventory/hosts web.yml` to configure it with Ansible.
 
 ## Adding Inventory/Hosts for Ansible
 
