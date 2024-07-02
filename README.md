@@ -6,14 +6,20 @@ This repository contains the necessary files and documentation to create a serve
 
 Before getting started, make sure you have the following:
 
-- A Digital Ocean account
+- A Digital Ocean or Google Cloud account
 - Terraform (Replaced by OpenTofu) installed on your local machine
-- Ansible installed on your local machine
+- Ansible installed on your local
 
 ## Digital Ocean Setup
 
 - Create project in digital ocean
 - Add your private key on digital ocean
+
+## Google Cloud Setup
+
+- Create project in Google Cloud
+- Enable Compute Engine API
+- Create service account and keys
 
 ## Getting Started
 
@@ -21,15 +27,9 @@ To create the server and configure it with Ansible, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Open a terminal and navigate to the repository's directory.
-3. Update the `terraform.tfvars` file with your Digital Ocean API token and desired server configuration.
-4. Run `tofu apply \
-    -var "do_token=${DO_PAT}" \
-    -var "pvt_key=${PVT_KEY}"
-` to initialize the Terraform (Replaced by OpenTofu) environment.
-5. Run `tofu apply \
-    -var "do_token=${DO_PAT}" \
-    -var "pvt_key=${PVT_KEY}"
-` to create the server in Digital Ocean.
+3. Update the `terraform.tfvars` file with your desired server configuration.
+4. Run `tofu init` to initialize the Terraform (Replaced by OpenTofu) environment.
+5. Run `tofu apply` to create the server.
 6. Once the server is created, run `ansible-playbook -i inventory/hosts web.yml` to configure it with Ansible.
 
 ## Adding Inventory/Hosts for Ansible
